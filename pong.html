@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#game {
+			background-color: #002038;
+			/*border: 2px solid grey;*/
+			border-radius: 30px;
+			width: 1000px;
+			height: 450px;
+			margin: auto;
+			margin-top: 30px;
+			position: relative;
+			box-shadow: 0 2px 2px 0 #002038;
+
+		}
+		#leftpad, #rightpad {
+			width: 20px;
+			height: 90px;
+			background-color: beige;
+			border: 2px solid grey;
+			border-radius: 30px;
+			position: absolute;
+		}
+		#ball {
+			width: 20px;
+			height: 20px;
+			background-color: #002038;
+			border: 3px solid beige;
+			position: absolute;
+			border-radius: 100%;
+		}
+		#btn {
+			margin: 10px;
+			background-color: #002038;
+			color: beige;
+			border: 3px solid #002038;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		#btn:hover {
+			background-color: beige;
+			color: #002038;
+		}
+		#btn:focus {
+			border: none;
+			outline: none;
+		}
+		#countdown {
+			max-width: 20px;
+			border-radius: 3px;
+		}
+		.level {
+			background-color: #002038;
+			color: beige;
+			font-size: 12px;
+		}
+		.numselect {
+			background-color: #002038;
+			color: beige;
+			border: none;
+			outline: none;
+		}
+		* {
+			text-align: center;
+			background-color: beige;
+		}
+		h1, h3 {
+			color: #002038;
+		}
+		ul {
+			list-style-type: none;
+		}
+	</style>
+</head>
+<body>
+	<div id="game">
+		<button id="btn">New Game</button>
+		<span class ="level">Level Select: </span><input class="numselect" id="nums" type="number" name="quantity" min="1" max="4">
+		<div id="countdown"></div>
+		<div id="leftpad">
+		</div>
+		<div id="rightpad">
+		</div>
+		<div id="ball">
+		</div>
+	</div>
+	<!-- <h1>PONG</h1> -->
+	<h3>Right: <span id="rscore"></span></h3>
+	<h3>Left: <span id="lscore"></span></h3>
+	<script>
+		var leftpad = document.getElementById("leftpad");
+		var rightpad = document.getElementById("rightpad");
+		var ball = document.getElementById("ball");
+		
+		var lpx = 20;
+		var lpy = 175;
+		var lpv = 0;
+
+		var rpx = 954;
+		var rpy = 175;
+		var rpv = 0;
+
+		var bx = 40;
+		var by = Math.random() * 50 + 200;
+		var bvx = Math.random()* 2 + 21;
+		var bvy = Math.random() * 4 + 14;
+		var btotalv;
+
+		document.getElementById("nums").defaultValue = "1";
+		var diff;
+		var spd;
+
+		var timeout;
+		var st;
+
+		var rscore = 0;
+		var lscore = 0;
+		document.getElementById("rscore").innerHTML = 0;
+		document.getElementById("lscore").innerHTML = 0;
+		document.getElementById("game").onmousemove = mousemove;
+
+		function getDiff () {
+			var levels = [18, 16, 14, 12];
+			var speeds = [7, 10, 13, 16];
+			var getval = document.getElementById("nums");
+			var setdifficulty = getval.value - 1;
+			var difficulty = [];
+			difficulty.push(levels[setdifficulty]);
+			difficulty.push(speeds[setdifficulty]);
+			return difficulty;
+		}
+
+		function reset() {
+			clearInterval(timeout);
+			clearTimeout(st);
+			origplace();
+			rscore = 0;
+			lscore = 0;
+			document.getElementById("rscore").innerHTML = 0;
+			document.getElementById("lscore").innerHTML = 0;
+		}
+		function place() {
+
+			leftpad.style.top = lpy + "px";
+			leftpad.style.left = lpx + "px";
+
+			rightpad.style.top = rpy + "px";
+			rightpad.style.left = rpx + "px";
+
+			ball.style.top = by + "px";
+			ball.style.left = bx + "px";
+		}
+		function origplace() {
+			lpx = 20;
+			lpy = 175;
+			lpv = 0;
+
+			rpx = 954;
+			rpy = 175;
+
+			bx = 40;
+			by = 180;
+			bvx = Math.random()* 1.5 + spd;
+			bvy = Math.random() * 1.5 + spd * 5 / 9;
+			btotalv = bvx*bvy;
+		}
+		function checkCollision() {
+			if (bx < lpx + 26
+				&& by < lpy + 90
+				&& bx + 26 > lpx
+				&& by + 26 > lpy
+				&& bvx < 0) {
+				bvx *= -1;
+				if ((by < lpy + 7 || by + 26 > lpy + 83) && bvy <= obvy * 2) {
+					bvy *= 8/7;
+					bvx *= 6/7;
+				}
+				else  if ((by > rpy + 7 && by+ 26 < rpy + 83)) {
+					bvy *= 6/7;
+					bvx *= 8/7;
+				}
+			}
+			if (bx  > rpx - 26
+				&& by < rpy + 90
+				&& bx -26 < rpx
+				&& by + 26 > rpy
+				&& bvx < 1000) {
+				bvx *= -1;
+				if ((by < rpy + 7 || by+ 26 > rpy + 83)) {
+					bvy *= 8/7;
+					bvx *= 6/7;
+				}
+				else  if ((by > rpy + 7 && by+ 26 < rpy + 83)) {
+					bvy *= 7/8;
+					bvx *= 8/7;
+				}
+			}
+		}
+	
+		function ballupdate() {
+			if (bx >= 974) {
+				clearInterval(timeout);
+				document.getElementById("lscore").innerHTML ++;
+				lscore ++;
+				if (lscore < 3) {
+					st = window.setTimeout(run, 100);
+				}
+				else {
+					clearInterval(timeout);
+					document.getElementById("lscore").innerHTML = "wins";
+				}
+			}
+			else if (bx <= 6) {
+				clearInterval(timeout);
+				document.getElementById("rscore").innerHTML ++;		
+				rscore ++;	
+				if (rscore < 3) {
+					st = window.setTimeout(run, 100);
+				}
+				else {
+					clearInterval(timeout);
+					document.getElementById("rscore").innerHTML = "wins";
+				}
+			}
+			if (by >= 430 && bvy >= 0) {
+				bvy *= -1;
+			}
+			else if (by <= 0 && bvy < 0) {
+				bvy *= -1;
+			}
+			checkCollision();
+			bx += bvx;
+			by += bvy
+		}
+
+		function leftpadupdate() {
+			if (by > lpy + 28 && by+ 26 < lpy + 62) {
+				lpv = 0;
+			}
+			else if (by > lpy + 45) {
+		 		lpv = btotalv / diff;
+			}
+			else if (by < lpy + 45) {
+				lpv = 0 - btotalv / diff;
+			}
+			lpy += lpv;
+		}
+
+		function rightpadupdate() {
+			if (by > rpy + 28 && by+ 26 < rpy + 62) {
+				rpv = 0;
+			}
+			else if (by > rpy + 45) {
+		 		rpv = btotalv / getDiff()[0];
+			}
+			else if (by < rpy + 45) {
+				rpv = 0 - btotalv / getDiff()[0];
+			}
+			rpy += rpv;
+		}
+
+		function update() {
+			ballupdate();
+			if (bx < 500 && bvx < 0) {
+				leftpadupdate();
+			}
+			// else if (bx > 500 && bvx > 0) {
+			// 	rightpadupdate();
+			// }
+			if (rpy + 90 > 450) {
+				rpy = 352;
+			}
+			else if (rpy < 0) {
+				rpy = 4;
+			}
+			if (lpy + 90 > 450) {
+				lpy = 352;
+			}
+			else if (lpy < 0) {
+				lpy = 4;
+			}
+		}
+
+		function mousemove() {
+			rpy = event.pageY - event.target.offsetTop - 45;
+		}
+
+		function loop() {
+			update();
+			place();
+		}
+
+		function start() {
+			origplace();
+			timeout = setInterval(loop, (1000/60));
+			document.getElementById("countdown").innerHTML = "";
+		}
+		function counter() {
+			window.setTimeout(function () {
+				document.getElementById("countdown").innerHTML = "1";
+				}, 1000);
+			document.getElementById("countdown").innerHTML = "2";
+		}
+		function run() {
+			counter();
+			place();
+			origplace();
+			st = window.setTimeout(start, 2000);
+		}
+		function newg() {
+			reset();
+			diff = getDiff()[0];
+			spd = getDiff()[1];
+			run();
+		}
+		place();
+			document.getElementById('btn').onclick = newg;
+
+	</script>
+</body>
+</html>
