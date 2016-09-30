@@ -1,0 +1,100 @@
+		#game {
+			background-color: #002c30;
+			/*border: 2px solid grey;*/
+			border-radius: 30px;
+			width: 1000px;
+			height: 450px;
+			margin: auto;
+			margin-top: 50px;
+			position: relative;
+			box-shadow: 0 2px 2px 0 #002c30;
+		}
+		.div2 {
+			width: 1000px;
+			height: 50px;
+			margin: auto;
+			background-color: #002c30;
+			position: relative;
+			border: 2px solid #002c30;
+			border-radius: 30px;
+			box-shadow: 0 2px 2px 0 #002c30;
+		}
+		#leftpad, #rightpad {
+			width: 20px;
+			height: 90px;
+			background-color: beige;
+			border: 2px solid grey;
+			border-radius: 30px;
+			position: absolute;
+		}
+		#ball {
+			width: 20px;
+			height: 20px;
+			background-color: #002c30;
+			border: 3px solid beige;
+			position: absolute;
+			border-radius: 100%;
+		}
+		#btn {
+			margin: 10px;
+			background-color: #002c30;
+			color: beige;
+			border: 3px solid #002c30;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		#btn:hover {
+			background-color: beige;
+			color: #002c30;
+		}
+		#btn:focus {
+			border: none;
+			outline: none;
+		}
+		#countdown {
+			max-width: 20px;
+			border-radius: 3px;
+			margin-left: 3px;
+		}
+		.level {
+			background-color: #002c30;
+			color: beige;
+			font-size: 12px;
+		}
+		.numselect {
+			background-color: #002c30;
+			color: beige;
+			border: none;
+			outline: none;
+		}
+		.scores {
+			position: absolute;
+			background-color: transparent;
+			color: beige;
+			font-weight: bold;
+			font-size: 28px;
+			padding: 10px;
+		}
+		.title {
+			color: beige;
+			font-size: 43px;
+			background-color: #002c30;
+			font-weight: bolder;
+		}
+		#lscore {
+			left: 100px;
+		}
+		#rscore {
+			right: 100px;
+		}
+		* {
+			text-align: center;
+			background-color: beige;
+			font-family: "Optima";
+		}
+		h1, h3 {
+			color: #002c30;
+		}
+		ul {
+			list-style-type: none;
+		}
