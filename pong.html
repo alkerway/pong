@@ -5,16 +5,25 @@
 	<title>Document</title>
 	<style>
 		#game {
-			background-color: #002038;
+			background-color: #002c30;
 			/*border: 2px solid grey;*/
 			border-radius: 30px;
 			width: 1000px;
 			height: 450px;
 			margin: auto;
-			margin-top: 30px;
+			margin-top: 50px;
 			position: relative;
-			box-shadow: 0 2px 2px 0 #002038;
-
+			box-shadow: 0 2px 2px 0 #002c30;
+		}
+		.div2 {
+			width: 1000px;
+			height: 50px;
+			margin: auto;
+			background-color: #002c30;
+			position: relative;
+			border: 2px solid #002c30;
+			border-radius: 30px;
+			box-shadow: 0 2px 2px 0 #002c30;
 		}
 		#leftpad, #rightpad {
 			width: 20px;
@@ -27,22 +36,22 @@
 		#ball {
 			width: 20px;
 			height: 20px;
-			background-color: #002038;
+			background-color: #002c30;
 			border: 3px solid beige;
 			position: absolute;
 			border-radius: 100%;
 		}
 		#btn {
 			margin: 10px;
-			background-color: #002038;
+			background-color: #002c30;
 			color: beige;
-			border: 3px solid #002038;
+			border: 3px solid #002c30;
 			border-radius: 5px;
 			cursor: pointer;
 		}
 		#btn:hover {
 			background-color: beige;
-			color: #002038;
+			color: #002c30;
 		}
 		#btn:focus {
 			border: none;
@@ -51,24 +60,46 @@
 		#countdown {
 			max-width: 20px;
 			border-radius: 3px;
+			margin-left: 3px;
 		}
 		.level {
-			background-color: #002038;
+			background-color: #002c30;
 			color: beige;
 			font-size: 12px;
 		}
 		.numselect {
-			background-color: #002038;
+			background-color: #002c30;
 			color: beige;
 			border: none;
 			outline: none;
 		}
+		.scores {
+			position: absolute;
+			background-color: transparent;
+			color: beige;
+			font-weight: bold;
+			font-size: 28px;
+			padding: 10px;
+		}
+		.title {
+			color: beige;
+			font-size: 43px;
+			background-color: #002c30;
+			font-weight: bolder;
+		}
+		#lscore {
+			left: 100px;
+		}
+		#rscore {
+			right: 100px;
+		}
 		* {
 			text-align: center;
 			background-color: beige;
+			font-family: "Optima";
 		}
 		h1, h3 {
-			color: #002038;
+			color: #002c30;
 		}
 		ul {
 			list-style-type: none;
@@ -78,7 +109,8 @@
 <body>
 	<div id="game">
 		<button id="btn">New Game</button>
-		<span class ="level">Level Select: </span><input class="numselect" id="nums" type="number" name="quantity" min="1" max="4">
+		<span class ="level">Players: </span><input class="numselect" id="numplay" type="number" name="players" min="0" max="1">
+		<span class ="level"> Level: </span><input class="numselect" id="lvl" type="number" name="quantity" min="1" max="4">
 		<div id="countdown"></div>
 		<div id="leftpad">
 		</div>
@@ -87,9 +119,13 @@
 		<div id="ball">
 		</div>
 	</div>
+	<br/>
+	<div class="div2">
+		<span id="lscore" class="scores"></span>
+		<span class="title">PONG</span>
+		<span id="rscore" class="scores"></span>
+	</div>
 	<!-- <h1>PONG</h1> -->
-	<h3>Right: <span id="rscore"></span></h3>
-	<h3>Left: <span id="lscore"></span></h3>
 	<script>
 		var leftpad = document.getElementById("leftpad");
 		var rightpad = document.getElementById("rightpad");
@@ -104,14 +140,18 @@
 		var rpv = 0;
 
 		var bx = 40;
-		var by = Math.random() * 50 + 200;
+		var by = 210;
 		var bvx = Math.random()* 2 + 21;
 		var bvy = Math.random() * 4 + 14;
 		var btotalv;
 
-		document.getElementById("nums").defaultValue = "1";
+		document.getElementById("lvl").defaultValue = "3";
 		var diff;
 		var spd;
+
+		document.getElementById("numplay").defaultValue = "1";
+		var players;
+		var move = true;
 
 		var timeout;
 		var st;
@@ -120,17 +160,22 @@
 		var lscore = 0;
 		document.getElementById("rscore").innerHTML = 0;
 		document.getElementById("lscore").innerHTML = 0;
-		document.getElementById("game").onmousemove = mousemove;
 
 		function getDiff () {
-			var levels = [18, 16, 14, 12];
+			var levels = [18, 16, 13, 10];
 			var speeds = [7, 10, 13, 16];
-			var getval = document.getElementById("nums");
+			var getval = document.getElementById("lvl");
 			var setdifficulty = getval.value - 1;
 			var difficulty = [];
 			difficulty.push(levels[setdifficulty]);
 			difficulty.push(speeds[setdifficulty]);
 			return difficulty;
+		}
+		function getPlayers() {
+			var getplay = document.getElementById("numplay");
+			var playnum = getplay.value;
+			console.log(playnum);
+			return playnum;
 		}
 
 		function reset() {
@@ -174,7 +219,7 @@
 				&& by + 26 > lpy
 				&& bvx < 0) {
 				bvx *= -1;
-				if ((by < lpy + 7 || by + 26 > lpy + 83) && bvy <= obvy * 2) {
+				if ((by < lpy + 7 || by + 26 > lpy + 83) && bvy) {
 					bvy *= 8/7;
 					bvx *= 6/7;
 				}
@@ -205,24 +250,26 @@
 				clearInterval(timeout);
 				document.getElementById("lscore").innerHTML ++;
 				lscore ++;
-				if (lscore < 3) {
+				if (lscore < 5) {
 					st = window.setTimeout(run, 100);
 				}
 				else {
 					clearInterval(timeout);
-					document.getElementById("lscore").innerHTML = "wins";
+					document.getElementById("lscore").innerHTML = "winner";
+					document.getElementById("rscore").innerHTML = ":(";
 				}
 			}
 			else if (bx <= 6) {
 				clearInterval(timeout);
 				document.getElementById("rscore").innerHTML ++;		
 				rscore ++;	
-				if (rscore < 3) {
+				if (rscore < 5) {
 					st = window.setTimeout(run, 100);
 				}
 				else {
 					clearInterval(timeout);
-					document.getElementById("rscore").innerHTML = "wins";
+					document.getElementById("rscore").innerHTML = "winner";
+					document.getElementById("lscore").innerHTML = ":(";
 				}
 			}
 			if (by >= 430 && bvy >= 0) {
@@ -267,9 +314,10 @@
 			if (bx < 500 && bvx < 0) {
 				leftpadupdate();
 			}
-			// else if (bx > 500 && bvx > 0) {
-			// 	rightpadupdate();
-			// }
+			else if (move && bx > 500 && bvx > 0) {
+				console.log(move);
+				rightpadupdate();
+			}
 			if (rpy + 90 > 450) {
 				rpy = 352;
 			}
@@ -314,6 +362,14 @@
 			reset();
 			diff = getDiff()[0];
 			spd = getDiff()[1];
+			players = getPlayers();
+			if (players > 0) {
+				document.getElementById("game").onmousemove = mousemove;
+				move = false;
+			}
+			else {
+				move = true;
+			}
 			run();
 		}
 		place();
