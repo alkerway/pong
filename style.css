@@ -1,6 +1,5 @@
 		#game {
 			background-color: #002c30;
-			/*border: 2px solid grey;*/
 			border-radius: 30px;
 			width: 1000px;
 			height: 450px;
@@ -42,6 +41,7 @@
 			border: 3px solid #002c30;
 			border-radius: 5px;
 			cursor: pointer;
+			font-size: 14px;
 		}
 		#btn:hover {
 			background-color: beige;
@@ -82,10 +82,10 @@
 			font-weight: bolder;
 		}
 		#lscore {
-			left: 100px;
+			left: 200px;
 		}
 		#rscore {
-			right: 100px;
+			right: 200px;
 		}
 		* {
 			text-align: center;
