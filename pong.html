@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<link rel="stylesheet" href="style.css"/>
+		<link rel="icon" type="image/png" href="http://cache3.asset-cache.net/xt/160451900.jpg?v=1&g=fs1%7C0%7CSKP120%7C51%7C900&s=1">
 </head>
 <body>
 	<div id="game">
@@ -72,7 +73,6 @@
 		function getPlayers() {
 			var getplay = document.getElementById("numplay");
 			var playnum = getplay.value;
-			console.log(playnum);
 			return playnum;
 		}
 
@@ -111,11 +111,11 @@
 			btotalv = bvx*bvy;
 		}
 		function checkCollision() {
-			if (bx < lpx + 26
-				&& by < lpy + 90
-				&& bx + 26 > lpx
-				&& by + 26 > lpy
-				&& bvx < 0) {
+			if (bx < lpx + 26 &&
+			 by < lpy + 90 &&
+			 bx + 26 > lpx &&
+			 by + 26 > lpy &&
+			 bvx < 0) {
 				bvx *= -1;
 				if ((by < lpy + 7 || by + 26 > lpy + 83) && bvy) {
 					bvy *= 8/7;
@@ -126,11 +126,11 @@
 					bvx *= 8/7;
 				}
 			}
-			if (bx  > rpx - 26
-				&& by < rpy + 90
-				&& bx -26 < rpx
-				&& by + 26 > rpy
-				&& bvx < 1000) {
+			if (bx  > rpx - 26 &&
+			 by < rpy + 90 &&
+			 bx -26 < rpx &&
+			 by + 26 > rpy &&
+			 bvx < 1000) {
 				bvx *= -1;
 				if ((by < rpy + 7 || by+ 26 > rpy + 83)) {
 					bvy *= 8/7;
@@ -154,7 +154,6 @@
 				else {
 					clearInterval(timeout);
 					document.getElementById("lscore").innerHTML = "winner";
-					document.getElementById("rscore").innerHTML = ":(";
 				}
 			}
 			else if (bx <= 6) {
@@ -167,7 +166,6 @@
 				else {
 					clearInterval(timeout);
 					document.getElementById("rscore").innerHTML = "winner";
-					document.getElementById("lscore").innerHTML = ":(";
 				}
 			}
 			if (by >= 430 && bvy >= 0) {
@@ -178,7 +176,7 @@
 			}
 			checkCollision();
 			bx += bvx;
-			by += bvy
+			by += bvy;
 		}
 
 		function leftpadupdate() {
@@ -213,7 +211,6 @@
 				leftpadupdate();
 			}
 			else if (move && bx > 500 && bvx > 0) {
-				console.log(move);
 				rightpadupdate();
 			}
 			if (rpy + 90 > 450) {
