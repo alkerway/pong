@@ -21,7 +21,7 @@
 		#leftpad, #rightpad {
 			width: 20px;
 			height: 90px;
-			background-color: beige;
+			background-color: #F1F8E9;
 			border: 2px solid grey;
 			border-radius: 30px;
 			position: absolute;
@@ -30,21 +30,21 @@
 			width: 20px;
 			height: 20px;
 			background-color: #002c30;
-			border: 3px solid beige;
+			border: 3px solid #F1F8E9;
 			position: absolute;
 			border-radius: 100%;
 		}
 		#btn {
 			margin: 10px;
 			background-color: #002c30;
-			color: beige;
+			color: #F1F8E9;
 			border: 3px solid #002c30;
 			border-radius: 5px;
 			cursor: pointer;
 			font-size: 14px;
 		}
 		#btn:hover {
-			background-color: beige;
+			background-color: #F1F8E9;
 			color: #002c30;
 		}
 		#btn:focus {
@@ -58,25 +58,25 @@
 		}
 		.level {
 			background-color: #002c30;
-			color: beige;
+			color: #F1F8E9;
 			font-size: 12px;
 		}
 		.numselect {
 			background-color: #002c30;
-			color: beige;
+			color: #F1F8E9;
 			border: none;
 			outline: none;
 		}
 		.scores {
 			position: absolute;
 			background-color: transparent;
-			color: beige;
+			color: #F1F8E9;
 			font-weight: bold;
 			font-size: 28px;
 			padding: 10px;
 		}
 		.title {
-			color: beige;
+			color: #F1F8E9;
 			font-size: 43px;
 			background-color: #002c30;
 			font-weight: bolder;
@@ -89,7 +89,7 @@
 		}
 		* {
 			text-align: center;
-			background-color: beige;
+			background-color: #F1F8E9;
 			font-family: "Optima";
 		}
 		h1, h3 {
